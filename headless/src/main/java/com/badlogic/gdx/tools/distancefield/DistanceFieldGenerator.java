@@ -23,7 +23,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-/** Generates a signed distance field image from a binary (black/white) source image.
+/** Generates a signed distance field image from a monochrome source image.
  * 
  * <p>
  * Signed distance fields are used in Team Fortress 2 by Valve to enable sharp rendering of bitmap fonts even at high
@@ -100,7 +100,7 @@ public class DistanceFieldGenerator {
 
 	/** Process the image into a distance field.
 	 * 
-	 * The input image should be binary (black/white), but if not, see {@link #isInside(int)}.
+	 * The input image should be binary (black/white), but it doesn't need to be; see {@link #isInside(int)}.
 	 * 
 	 * The returned image is a factor of {@code upscale} smaller than {@code inImage}. Opaque pixels more than {@link #spread} away
 	 * in the output image from white remain opaque; transparent pixels more than {@link #spread} away in the output image from
@@ -195,7 +195,9 @@ public class DistanceFieldGenerator {
 
 	/** Prints usage information to standard output. */
 	private static void usage () {
-		System.out.println("Generates a distance field image from a black and white input image.\n"
+		System.out.println("Generates a distance field image from an effectively-one-color input image.\n"
+			+ "Pixels in the input that have less than 50% max RGB or less than 50%\n"
+			+ "alpha will be treated as black; all others will be considered white.\n"
 			+ "The distance field image contains a solid color and stores the distance\n" + "in the alpha channel.\n" + "\n"
 			+ "The output file format is inferred from the file name.\n" + "\n"
 			+ "Command line arguments: INFILE OUTFILE [OPTION...]\n" + "\n" + "Possible options:\n"
